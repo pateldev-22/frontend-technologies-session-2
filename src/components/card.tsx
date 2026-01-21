@@ -18,6 +18,8 @@ export default function ReusableCard({ProductList}:any) {
     const [category,setCategory] = useState<string[]>();
     const [categoryFilter, setCategoryFilter] = useState<string>("");
 
+    const [loading,setLoading] = useState(false);
+    const [error,setError] = useState("");
 
     async function fetchAllProducts(){
         const response = await fetch("https://dummyjson.com/products")
@@ -28,7 +30,8 @@ export default function ReusableCard({ProductList}:any) {
     async function fetchCategory(){
             await fetch("https://dummyjson.com/products/category-list")
             .then((response) => response.json())
-            .then((data)=> setCategory(data));
+            .then((data)=> setCategory(data))
+            .catch(() => setError("Failed to fetch product"));
     }
 
     async function featchProductsByCategory(category : string){
@@ -39,8 +42,10 @@ export default function ReusableCard({ProductList}:any) {
     }
 
     useEffect(() => {
+        setLoading(true);
         fetchAllProducts();
         fetchCategory();
+        setLoading(false);
     },[]);
 
     const handleSearch = (e:any) => {
@@ -95,6 +100,9 @@ export default function ReusableCard({ProductList}:any) {
                 
             ))}
         </select>
+
+    {loading && <p className="text-center">Loading products...</p>}
+    {error && <p className="text-red-500 text-center">{error}</p>}
 
     {products &&
     <div className="flex space-x-10">

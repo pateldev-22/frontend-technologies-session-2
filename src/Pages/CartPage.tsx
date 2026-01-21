@@ -2,8 +2,15 @@ import { useCart } from "@/context/CartContext";
 
 export default function CartPage() {
 
-    const { cart } = useCart();
+    const { cart,increment,decrement,removeProduct,clearCart } = useCart();
      
+    const total_product = cart.reduce(
+        (sum:number,curr:number) => sum + curr?.quantity,0
+    );
+
+    const total_price = cart.reduce(
+        (sum:number,curr:number) => sum + curr?.price * curr?.quantity,0
+    )
     return (
     <>
     <div className="max-w-2xl mx-auto p-4 bg-white shadow-lg rounded-lg">
@@ -29,9 +36,31 @@ export default function CartPage() {
                   <p className="text-gray-500">${item.price.toFixed(2)}</p>
                 </div>
               </div>
+
+              <div className="flex items-center gap-2">
+                <button onClick={() => decrement(item.id)}> - </button>
+                <span>{item.quantity}</span>
+                <button onClick={() => increment(item.id)}> + </button>
+                <button
+                onClick={() => removeProduct(item.id)}
+                className="text-red-500 ml-2"
+                >
+                    Remove
+                </button>
+                </div>
             </div>
           ))}
+
+        <div className="flex gap-4 mt-4">
+          total Items : {total_product} <br/>
+          total price : ${total_price.toFixed(2)}
+          </div>
+
+          <button onClick={clearCart} className="bg-red-500 text-white rounded px-4 py-2"> Clear Cart</button>
+
+          <button className=" ml-3 px-4 py-2 bg-green-600 text-white rounded"> checkout </button>
         </div>
+
       )}
     </div>
     </>

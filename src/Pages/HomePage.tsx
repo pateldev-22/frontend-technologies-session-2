@@ -4,15 +4,7 @@ import { useEffect, useState } from "react";
 
 
 export default function HomePage(){
-    const [data,setData] = useState(null);
 
-    // useEffect(() => {
-    //     fetch("https://dummyjson.com/products")
-    //     .then((response) => response.json())
-    //     .then((data) => setData(data));
-    // }, []);
-    
-    // console.log(data);
 
 
     return(
