@@ -1,4 +1,5 @@
 import { useCart } from "@/context/CartContext";
+import { useNavigate } from "react-router-dom";
 
 export default function CartPage() {
 
@@ -11,6 +12,8 @@ export default function CartPage() {
     const total_price = cart.reduce(
         (sum:number,curr:number) => sum + curr?.price * curr?.quantity,0
     )
+    const navigate = useNavigate();
+
     return (
     <>
     <div className="max-w-2xl mx-auto p-4 bg-white shadow-lg rounded-lg">
@@ -58,7 +61,8 @@ export default function CartPage() {
 
           <button onClick={clearCart} className="bg-red-500 text-white rounded px-4 py-2"> Clear Cart</button>
 
-          <button className=" ml-3 px-4 py-2 bg-green-600 text-white rounded"> checkout </button>
+          <button onClick={() => navigate('/checkout-page')}
+          className=" ml-3 px-4 py-2 bg-green-600 text-white rounded"> checkout </button>
         </div>
 
       )}

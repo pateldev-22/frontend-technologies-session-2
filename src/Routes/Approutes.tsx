@@ -1,4 +1,5 @@
 import CartPage from "@/Pages/CartPage";
+import Checkout from "@/Pages/Checkout";
 import HomePage from "@/Pages/HomePage";
 import { Route, Routes } from "react-router-dom";
 
@@ -18,6 +19,12 @@ const AppRoutes: React.FC = () => {
         }
         />
 
+        <Route
+        path="/checkout-page"
+        element={
+            <Checkout />
+        }
+        />
         
 
       </Routes>
