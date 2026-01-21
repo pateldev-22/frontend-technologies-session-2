@@ -16,7 +16,7 @@ export default function HomePage(){
                 <ReusableCard ProductList={ProductDetails}/>
         </div>
 
-        <div className="bg-green-500 p-4 rounded shadow">
+        <div className="bg-primary dark:bg-primary-dark p-4 rounded shadow">
                  <ProductForm />
         </div>
     </div>

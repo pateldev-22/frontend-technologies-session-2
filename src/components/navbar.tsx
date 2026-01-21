@@ -1,5 +1,7 @@
+import { useTheme } from '@/context/ThemeContext'
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon,SunIcon,MoonIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Moon } from 'lucide-react';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', current: true },
@@ -10,6 +12,8 @@ const navigation = [
 
 
 export default function Navbar() {
+  const context = useTheme();
+  console.log(context);
   return (
     <Disclosure
       as="nav"
@@ -40,6 +44,14 @@ export default function Navbar() {
                     {item.name}
                   </a>
                 ))}
+                <button
+                  onClick={context?.toggleTheme}
+                  aria-label={`Switch to ${context?.theme === "dark" ? "light" : "dark"} mode`}
+                  className={`fixed top-3 right-5 p-2 rounded transition-colors duration-300 
+                    ${context?.theme === "dark" ? "bg-black text-white" : "bg-white text-black"}`}
+                >
+                  {context?.theme === "dark" ? <SunIcon className="h-6 w-6" /> : <MoonIcon className="h-6 w-6" />}
+                </button>
               </div>
             </div>
           </div>
@@ -59,6 +71,9 @@ export default function Navbar() {
               {item.name}
             </DisclosureButton>
           ))}
+          <button onClick={context?.toggleTheme} className='fixed bg-red-400 top-5 text-white p-2 rounded'>
+                  {context?.theme === 'dark' ? <SunIcon /> : <MoonIcon />}
+                </button>
         </div>
       </DisclosurePanel>
     </Disclosure>

@@ -1,9 +1,9 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where(.dark, .dark *));
 
-@theme inline {
+/* @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -120,4 +120,9 @@
   body {
     @apply bg-background text-foreground;
   }
+} */
+
+@theme {
+    --color-primary: #0bdbb6;
+    --color-primary-dark: #0d0d0d;
 }

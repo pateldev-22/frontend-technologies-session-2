@@ -24,7 +24,7 @@ const [product,setProducts] = useState<Product[]>(() => {
 
   return (
     <div >
-      <h2 className="text-3xl ml-28 mb-20 text-slate-800">Add Product</h2>
+      <h2 className="text-3xl ml-28 mb-20 text-slate-800 dark:text-white">Add Product</h2>
       <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1">
         
         {/* Product Name */}
