@@ -2,6 +2,7 @@ import { useTheme } from '@/context/ThemeContext'
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon,SunIcon,MoonIcon, XMarkIcon,ShoppingCartIcon } from '@heroicons/react/24/outline'
 import { Moon } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', current: true },
@@ -14,6 +15,7 @@ const navigation = [
 export default function Navbar() {
   const context = useTheme();
   console.log(context);
+  const navigate = useNavigate();
   return (
     <Disclosure
       as="nav"
@@ -45,7 +47,7 @@ export default function Navbar() {
                   </a>
                 ))}
                 <button
-                  onClick={() => alert("Item added to cart!")}
+                  onClick={() => navigate('/cart')}
                   className="fixed top-3 right-14 gap-2 p-2.5 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
                 >
                   <ShoppingCartIcon className="h-5 w-5" />

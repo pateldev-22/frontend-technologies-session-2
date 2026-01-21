@@ -1,4 +1,4 @@
-import React, { createContext, useState, type ReactNode } from 'react'
+import React, { createContext, useContext, useState, type ReactNode } from 'react'
 
 
 export interface CartContextProps{
@@ -8,19 +8,18 @@ export interface CartContextProps{
 
 export const CartContext = createContext<CartContextProps | undefined>(undefined);
 
-export const CartProvider:React.FC<{childern : ReactNode}> = ({children}) => {
+export const CartProvider:React.FC<any> = ({children}) => {
 
-    const [cart,setCart] = useState<any>();
+    const [cart,setCart] = useState<any>(localStorage.getItem('cartProducts'));
 
     const addToCart = (product : any) => {
+        console.log(product);
+
         setCart([
             ...cart,
-            {
-                ...product,
-                quantity:1
-            }
-
+            product
         ])
+        
         localStorage.setItem("cartProducts", JSON.stringify(cart));
     }
 
@@ -35,3 +34,11 @@ export const CartProvider:React.FC<{childern : ReactNode}> = ({children}) => {
         </CartContext.Provider>
     )
 } 
+
+export function useCart(){
+    const context = useContext(CartContext);
+    if(!context){
+        console.log("error in context");
+    }
+    return context;
+}

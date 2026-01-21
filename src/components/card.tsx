@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { useCart } from "@/context/CartContext";
 import type { Product } from "@/types/products"
 import { useEffect, useState } from "react";
 
@@ -62,6 +63,8 @@ export default function ReusableCard({ProductList}:any) {
     console.log("filter selected", categoryFilter);
 
 
+    const context = useCart();
+    const {addToCart} = context;
 
   return (
     <>
@@ -80,11 +83,10 @@ export default function ReusableCard({ProductList}:any) {
             className="w-full p-2 border rounded bg-white  mb-8"
         >
             <option value="" >All</option>
-            {category?.map((cat) => (
-                <div>
-                    <option value={`${cat}`}>{cat}</option>
-                    
-                </div>
+            {category?.map((cat,idx) => (
+                
+                    <option value={`${cat}`} key={idx}>{cat}</option>
+                
             ))}
         </select>
 
@@ -94,7 +96,7 @@ export default function ReusableCard({ProductList}:any) {
         Total Products : {products.length}
         </div>
         <div>
-            Low Stock: {products.filter((p) => p.stock < 5).length}
+            Low Stock: {products.filter((p : any) => p.stock < 5).length}
         </div>
         <div>
             inventory value : {products.reduce((acc :any,curr : any) => acc +curr.price*curr.stock,0)}
@@ -121,7 +123,14 @@ export default function ReusableCard({ProductList}:any) {
             </CardContent>
             <CardFooter>
                 <div className='mt-6 flex justify-between items-center'>
-                    <button className='px-4 py-2 bg-blue-600 text-white text-xs font-bold uppercase rounded hover:bg-blue-700 focus:outline-none focus:bg-gray-700'>Add to cart</button>
+                    <button
+                    className="px-4 py-2 bg-gray-800 text-white text-xs font-bold uppercase rounded hover:bg-gray-700 focus:outline-none focus:bg-gray-700"
+                    onClick={() => {
+                    addToCart(product)
+                    }}
+                    >
+                    Add To Cart
+                    </button>
                 </div>
             </CardFooter>
             </Card>
