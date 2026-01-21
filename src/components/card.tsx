@@ -2,53 +2,84 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
 import type { Product } from "@/types/products"
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
 
 export default function ReusableCard({ProductList}:any) {
     console.log(ProductList);
     const [query, setQuery] = useState<string>("");
-    const [products,setProducts] = useState<Product[]>(ProductList);
-    const [categoryFilter, setCategoryFilter] = useState<string>("");
+    const [pro,setProducts] = useState<any>(ProductList);
+    const [category,setCategory] = useState<Array<string>>();
+    const [categoryFilter, setCategoryFilter] = useState<string>("All");
+
+
+    async function fetchAllProducts(){
+        const response = await fetch("https://dummyjson.com/products")
+         const data = await response.json();
+         setProducts(data.products);                   
+    }
+
+    function fetchCategory(){
+            fetch("https://dummyjson.com/products/category-list")
+            .then((response) => response.json())
+            .then((data)=> setCategory(data));
+    }
+
+    function featchProductsByCategory(categoryFilter:any){
+            fetch(`https://dummyjson.com/products/category/${categoryFilter}`)
+            .then((response) => response.json())
+            .then((data)=> setCategoryFilter(data));
+    }
+
+    useEffect(() => {
+        fetchAllProducts();
+        fetchCategory();
+    },[]);
 
     const handleSearch = (e:any) => {
         setQuery(e.target.value);
     }
 
     const handleCategoryChange = (e: any) => {
+        featchProductsByCategory(e.target.value);
         setCategoryFilter(e.target.value);
     }
 
-    const filteredData = products.filter((item) => {
-        const search_matches = item.name.toLowerCase().includes(query.toLowerCase().trim());
-        const category_matchs = categoryFilter === "" || item.category===categoryFilter;
+    const filteredData = pro.filter((item) => {
+        console.log("items",item)
+        const search_matches = item.title.toLowerCase().includes(query.toLowerCase().trim());
+        const category_matchs = categoryFilter=="" || categoryFilter==item.category;
         return search_matches && category_matchs; 
     });
 
-    const handleDelete = (name : string)=> {
-    const data = localStorage.getItem("product");
-        if (!data) {
-            console.warn("No data found in localStorage.");
-            return;
-    }
+    console.log("pro",pro);
+    console.log("All category",category);
+    console.log("filter selected", categoryFilter);
 
-    let parsed_data = JSON.parse(data);
+    // const handleDelete = (name : string)=> {
+    // const data = localStorage.getItem("product");
+    //     if (!data) {
+    //         console.warn("No data found in localStorage.");
+    //         return;
+    // }
 
-    if (!Array.isArray(parsed_data)) {
-      return;
-    }
+    // let parsed_data = JSON.parse(data);
+
+    // if (!Array.isArray(parsed_data)) {
+    //   return;
+    // }
         
-    console.log(parsed_data);
+    // console.log(parsed_data);
     
-    const filtered_data = parsed_data.filter(item => item.name !== name);
+    // const filtered_data = parsed_data.filter(item => item.name !== name);
 
-    localStorage.setItem("product",JSON.stringify(filtered_data));
+    // localStorage.setItem("product",JSON.stringify(filtered_data));
 
-    }
+    // }
 
 
   return (
@@ -65,30 +96,31 @@ export default function ReusableCard({ProductList}:any) {
     <select 
             value={categoryFilter} 
             onChange={handleCategoryChange}
-            className="w-full p-2 border rounded bg-white mb-8"
+            className="w-full p-2 border rounded bg-white  mb-8"
         >
-            <option value="">All Categories</option>
-            <option value="electronics">Electronics</option>
-            <option value="clothing">Clothing</option>
-            <option value="books">Books</option>
-            <option value="home">Home</option>
+            <option value="" >All</option>
+            {category?.map((cat) => (
+                <div>
+                    <option value={`${cat}`}>{cat}</option>
+                    
+                </div>
+            ))}
         </select>
 
     <div className="flex space-x-10">
         <div>
-        Total Products : {products.length}
+        Total Products : {pro.length}
         </div>
         <div>
-            Low Stock: {products.filter((p) => p.stock < 5).length}
+            Low Stock: {pro.filter((p) => p.stock < 5).length}
         </div>
         <div>
-            inventory value : {products.reduce((sum,acc) => sum+acc.price*acc.stock,0)}
+            inventory value : {pro.reduce((sum,acc) => sum+acc.price*acc.stock,0)}
         </div>
     </div>
     
-
     <div className="grid grid-cols-2 gap-2">
-    {filteredData.map((product : Product) => (
+    {pro.map((product : Product) => (
      <ul>
         <li key={product.id}>
             
@@ -104,9 +136,6 @@ export default function ReusableCard({ProductList}:any) {
                         Price : {product.price}
                     </div>
             </CardContent>
-            <CardFooter className="flex-col gap-2 bg-red-500 rounded p-2 text-white w-full sm:w-auto">
-                <button onClick={() => handleDelete(product.name)}>delete</button>
-            </CardFooter>
             </Card>
         </li>
      </ul>   
