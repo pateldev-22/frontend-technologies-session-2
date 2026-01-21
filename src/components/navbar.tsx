@@ -1,6 +1,6 @@
 import { useTheme } from '@/context/ThemeContext'
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Bars3Icon,SunIcon,MoonIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon,SunIcon,MoonIcon, XMarkIcon,ShoppingCartIcon } from '@heroicons/react/24/outline'
 import { Moon } from 'lucide-react';
 
 const navigation = [
@@ -44,6 +44,12 @@ export default function Navbar() {
                     {item.name}
                   </a>
                 ))}
+                <button
+                  onClick={() => alert("Item added to cart!")}
+                  className="fixed top-3 right-14 gap-2 p-2.5 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                >
+                  <ShoppingCartIcon className="h-5 w-5" />
+                </button>
                 <button
                   onClick={context?.toggleTheme}
                   aria-label={`Switch to ${context?.theme === "dark" ? "light" : "dark"} mode`}
