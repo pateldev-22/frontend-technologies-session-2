@@ -1,7 +1,8 @@
-import React, { createContext, useContext, useState, type ReactNode } from 'react'
+import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 
 
 export interface CartContextProps{
+    cart: any[];
     addToCart : (product:any) => any; 
     clearCart : () => void;   
 }
@@ -10,17 +11,22 @@ export const CartContext = createContext<CartContextProps | undefined>(undefined
 
 export const CartProvider:React.FC<any> = ({children}) => {
 
-    const [cart,setCart] = useState<any>(localStorage.getItem('cartProducts'));
+    const [cart,setCart] = useState<any>(() => {
+        const stored = localStorage.getItem('cartProducts');
+        return stored ? JSON.parse(stored) : [];
+    });
+
+    useEffect(() => {
+        localStorage.setItem("cartProducts", JSON.stringify(cart));
+    },[cart]);
 
     const addToCart = (product : any) => {
         console.log(product);
 
-        setCart([
-            ...cart,
+        setCart(prev => [
+            ...prev,
             product
-        ])
-        
-        localStorage.setItem("cartProducts", JSON.stringify(cart));
+        ]);   
     }
 
     const clearCart = () => {
@@ -29,7 +35,7 @@ export const CartProvider:React.FC<any> = ({children}) => {
     }
 
     return (
-        <CartContext.Provider value={{addToCart,clearCart}}>
+        <CartContext.Provider value={{cart,addToCart,clearCart}}>
             {children}
         </CartContext.Provider>
     )

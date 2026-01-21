@@ -15,8 +15,8 @@ export default function ReusableCard({ProductList}:any) {
     console.log(ProductList);
     const [query, setQuery] = useState<string>("");
     const [products,setProducts] = useState<any>();
-    const [category,setCategory] = useState<Array<string>>();
-    const [categoryFilter, setCategoryFilter] = useState<string>("All");
+    const [category,setCategory] = useState<string[]>();
+    const [categoryFilter, setCategoryFilter] = useState<string>("");
 
 
     async function fetchAllProducts(){
@@ -31,10 +31,11 @@ export default function ReusableCard({ProductList}:any) {
             .then((data)=> setCategory(data));
     }
 
-    async function featchProductsByCategory(categoryFilter:any){
-            await fetch(`https://dummyjson.com/products/category/${categoryFilter}`)
-            .then((response) => response.json())
-            .then((data)=> setCategoryFilter(data));
+    async function featchProductsByCategory(category : string){
+            const res = await fetch(`https://dummyjson.com/products/category/${category}`)
+            const data = await res.json();
+            setProducts(data.products)
+            
     }
 
     useEffect(() => {
@@ -48,15 +49,20 @@ export default function ReusableCard({ProductList}:any) {
 
     const handleCategoryChange = (e: any) => {
         setCategoryFilter(e.target.value);
-        featchProductsByCategory(e.target.value);
+
+        if(e.target.value == ""){
+            fetchAllProducts();
+        }else{
+            featchProductsByCategory(e.target.value);
+        }
     }
 
-    // const filteredData = pro.filter((item) => {
-    //     console.log("items",item)
-    //     const search_matches = item.title.toLowerCase().includes(query.toLowerCase().trim());
-    //     const category_matchs = categoryFilter=="" || categoryFilter==item.category;
-    //     return search_matches && category_matchs; 
-    // });
+    const filteredData = products?.filter((item : Product) => {
+        console.log("items",item)
+        const search_matches = item.title.toLowerCase().includes(query.toLowerCase().trim());
+        const category_matchs = categoryFilter=="" || categoryFilter==item.category;
+        return search_matches && category_matchs; 
+    });
 
     console.log("pro",products);
     console.log("All category",category);
@@ -104,14 +110,13 @@ export default function ReusableCard({ProductList}:any) {
     </div>
     }
 
-    <div className="grid grid-cols-2 gap-2">
-    {products && products.map((product : Product) => (
-     <ul>
+    <ul className="grid grid-cols-2 gap-2">
+    {filteredData && filteredData.map((product : Product) => (
         <li key={product.id}>
             
             <Card className="max-w-sm mt-20 ml-10">
             <CardHeader>
-                <CardTitle className="text-black">Name : {product.name}</CardTitle>
+                <CardTitle className="text-black">Name : {product.title}</CardTitle>
                 <CardDescription>
                    Category :  {product.category}
                 </CardDescription>
@@ -136,10 +141,8 @@ export default function ReusableCard({ProductList}:any) {
             </Card>
             
         </li>
-     </ul>   
-    
     ))}
-    </div>
+    </ul>
     </>
   )
 }
