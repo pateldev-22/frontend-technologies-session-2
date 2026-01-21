@@ -85,13 +85,13 @@ export default function ReusableCard({ProductList}:any) {
         placeholder="Search..."
         value={query}
         onChange={handleSearch}
-        className="w-full p-2 mb-4 bg-amber-50 hover:bg-amber-100"
+        className="w-full p-2 mb-4 bg-amber-50 hover:bg-amber-100 dark:text-black"
     />
     
     <select 
             value={categoryFilter} 
             onChange={handleCategoryChange}
-            className="w-full p-2 border rounded bg-white  mb-8"
+            className="w-full p-2 border rounded bg-white dark:text-black mb-8"
         >
             <option value="" >All</option>
             {category?.map((cat,idx) => (
@@ -105,7 +105,7 @@ export default function ReusableCard({ProductList}:any) {
     {error && <p className="text-red-500 text-center">{error}</p>}
 
     {products &&
-    <div className="flex space-x-10">
+    <div className="flex space-x-10 dark:text-red-500">
         <div>
         Total Products : {products.length}
         </div>
@@ -124,7 +124,7 @@ export default function ReusableCard({ProductList}:any) {
             
             <Card className="max-w-sm mt-20 ml-10">
             <CardHeader>
-                <CardTitle className="text-black">Name : {product.title}</CardTitle>
+                <CardTitle className="text-black dark:text-white">Name : {product.title}</CardTitle>
                 <CardDescription>
                    Category :  {product.category}
                 </CardDescription>

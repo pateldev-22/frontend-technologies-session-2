@@ -15,6 +15,14 @@ const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 const ThemeProvider: React.FC<{children : ReactNode}> = ({children}) => {
     const [theme,setTheme] = useState<Theme>('light');
     
+    useEffect(() => {
+        const root = document.documentElement;
+        if(theme === 'dark'){
+            root.classList.add('dark');
+        }else{
+            root.classList.remove('dark');
+        }
+    },[theme])
 
     function toggleTheme(){
         setTheme((previous_theme) => {
