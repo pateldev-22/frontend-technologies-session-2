@@ -6,7 +6,7 @@ import { href, NavLink, useNavigate } from 'react-router-dom';
 
 const navigation = [
   {name:"Home" , href:"",current:true},
-  { name: 'products', href: 'products', current: false },
+  { name: 'products', href: 'product', current: false },
   { name: 'cart', href: 'cart', current: false },
   { name: 'About', href: '/About', current: false },
 ]

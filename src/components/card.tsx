@@ -1,3 +1,4 @@
+import { api } from "@/api/AxiosClient";
 import {
   Card,
   CardContent,
@@ -22,9 +23,9 @@ export default function ReusableCard({ProductList}:any) {
     const [error,setError] = useState("");
 
     async function fetchAllProducts(){
-        const response = await fetch("https://dummyjson.com/products")
-         const data = await response.json();
-         setProducts(data.products);                   
+        const response = await api.get("products")
+         console.log("here !! product",response);
+         setProducts(response.data.products);                   
     }
 
     async function fetchCategory(){
