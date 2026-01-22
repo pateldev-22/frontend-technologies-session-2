@@ -7,11 +7,13 @@ export default function CartPage() {
 
     const cart = useSelector((state : any) => state.cart);
      const dispatch = useDispatch();
-    const total_product = cart.reduce(
+     console.log(cart);
+     console.log(cart.item);
+    const total_product = cart.items.reduce(
         (sum:number,curr:number) => sum + curr?.quantity,0
     );
 
-    const total_price = cart.reduce(
+    const total_price = cart.items.reduce(
         (sum:number,curr:number) => sum + curr?.price * curr?.quantity,0
     )
     const navigate = useNavigate();
@@ -25,7 +27,7 @@ export default function CartPage() {
         <p className="text-gray-500">Your cart is empty.</p>
       ) : (
         <div className="space-y-4">
-          {cart &&  cart.map((item : any) => (
+          {cart &&  cart.items.map((item : any) => (
             <div
               key={item.id}
               className="flex items-center justify-between border-b pb-4"
@@ -37,7 +39,7 @@ export default function CartPage() {
                   className="w-16 h-16 object-cover rounded"
                 />
                 <div>
-                  <h3 className="font-semibold">{item.name}</h3>
+                  <h3 className="font-semibold text-black">{item.title}</h3>
                   <p className="text-gray-500">${item.price.toFixed(2)}</p>
                 </div>
               </div>
@@ -70,7 +72,7 @@ export default function CartPage() {
           total price : ${total_price.toFixed(2)}
           </div>
 
-          <button onClick={clearCart} className="bg-red-500 text-white rounded px-4 py-2"> Clear Cart</button>
+          {/* <button onClick={dispatch} className="bg-red-500 text-white rounded px-4 py-2"> Clear Cart</button> */}
 
           <button onClick={() => navigate('/checkout-page')}
           className=" ml-3 px-4 py-2 bg-green-600 text-white rounded"> checkout </button>

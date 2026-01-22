@@ -12,24 +12,20 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addItem } from "@/redux/slices/CartSlice";
+import { useProducts } from "@/api/quires";
 
 export default function ProductsPage() {
 
-    const [products,setProducts] = useState();
 
     const dispatch = useDispatch();
 
-    async function fetchAllProducts(){
-            const response = await api.get("products")
-             console.log("here !! product",response);
-             setProducts(response.data.products);                   
-    }
-    
-    useEffect(() => {
-        fetchAllProducts();
-    },[])
+    const {data,isLoading,error} = useProducts();
+    const products = data;
 
     const navigate = useNavigate();
+
+    if(isLoading) return <div className="text-center py-10">Loading Products ... </div>
+    if(error) return <div className="text-center py-10 text-red-100">Error loading products</div>
 
     return (<> 
     <ul className="grid grid-cols-2 gap-2">
@@ -55,6 +51,7 @@ export default function ProductsPage() {
                     className=" text-blue-500">View Details
                 </button>
                 <button onClick={() => {
+                    console.log("button clicked");
                     dispatch(addItem(
                         {
                             id:product.id,

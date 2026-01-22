@@ -1,6 +1,7 @@
 import { api } from "@/api/AxiosClient";
+import { useProduct } from "@/api/quires";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface Product {
   id: number;
@@ -19,38 +20,16 @@ interface Product {
 const ProductsDetails: React.FC = () => {
     const {productId} = useParams();
 
-    console.log(productId);
-  
-    const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!productId) return;
-
-    const fetchProduct = async () => {
-      try {
-        setLoading(true);
-        console.log("here rn");
-        const res = await api.get(`/products/${productId}`);
-        console.log(res);
-        setProduct(res.data);
-      } catch (err) {
-        setError((err as Error).message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProduct();
-  }, [productId]);
-
-  if (loading) {
+    const { data,isLoading,error} = useProduct(productId);
+    const product = data;
+  if (isLoading) {
     return <div className="text-center py-10 text-gray-500">Loading...</div>;
   }
 
   if (error) {
-    return <div className="text-center py-10 text-red-500">{error}</div>;
+    return <div className="text-center py-10 text-red-500">{error.message}</div>;
   }
 
   if (!product) {
@@ -85,6 +64,9 @@ const ProductsDetails: React.FC = () => {
           <p className="text-sm text-gray-500 mb-4">
             Stock: {product.stock} | Brand: {product.brand} | Category: {product.category}
           </p>
+          <button onClick={() => navigate('customize')}>
+            Customize Product
+          </button>
           <button className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
             Add to Cart
           </button>
