@@ -7,9 +7,24 @@ export default function Checkout() {
         (sum:number,curr:number) => sum + curr?.price * curr?.quantity,0
     )
 
+    let isMounted = true;
+
     const [showCoupon , setShowCoupon] = useState(false);
     const [coupon,setCoupon] = useState<number>(0);
     const [originalPrice,setOriginalPrice] = useState<number | null>(null);
+
+    const total_time = 5*60; //bcz 5 min is 300sec
+    const [timeLeft , setTimeLeft] = useState(total_time);
+
+    if(isMounted){
+        const interval = setInterval(() => {
+            setTimeLeft(prevTime => {
+                return prevTime - 1;
+            })
+            clearInterval(interval);
+        },1000);
+        setTimeLeft
+    }
 
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -59,6 +74,9 @@ export default function Checkout() {
             }
 
             <p>final amount {discountedPrice}.rs</p>
+
+            time remaining:
+            {timeLeft}
         </div>
     )
 }

@@ -101,8 +101,8 @@ export default function ReusableCard({ProductList}:any) {
             ))}
         </select>
 
-    {loading && <p className="text-center">Loading products...</p>}
-    {error && <p className="text-red-500 text-center">{error}</p>}
+    {loading && <p className="absolute text-center text-9xl bg-white text-black">Loading products...</p>}
+    {error && <p className="text-red-500 text-center bg-black">{error}</p>}
 
     {products &&
     <div className="flex space-x-10 dark:text-red-500">

@@ -1,5 +1,8 @@
-import React, { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
+import React, { createContext, useContext, useEffect, useState } from 'react'
 
+export interface cart {
+    
+}
 
 export interface CartContextProps{
     cart: any[];
