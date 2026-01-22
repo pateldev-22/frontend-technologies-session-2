@@ -1,8 +1,9 @@
-import { useCart } from '@/context/CartContext';
+// import { useCart } from '@/context/CartContext';
 import { useTheme } from '@/context/ThemeContext'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
 import { Bars3Icon,SunIcon,MoonIcon, XMarkIcon,ShoppingCartIcon } from '@heroicons/react/24/outline'
-import { href, NavLink, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import {  NavLink, useNavigate } from 'react-router-dom';
 
 const navigation = [
   {name:"Home" , href:"",current:true},
@@ -16,12 +17,14 @@ export default function Navbar() {
   const context = useTheme();
   console.log(context);
   const navigate = useNavigate();
-  const {cart} = useCart();
+  const cart = useSelector((state : any) => state.item);
+  
 
-  const total_quantity = cart.reduce(
-    (sum:number, curr:any) => sum + curr.quantity,
-    0
-  )
+
+  // const total_quantity = cart.reduce(
+  //   (sum:number, curr:any) => sum + curr.quantity,
+  //   0
+  // )
 
   const navLinkClass = ({ isActive } : any) =>
     `px-4 py-2 rounded transition-colors duration-200 ${
@@ -65,9 +68,9 @@ export default function Navbar() {
                   className="fixed top-3 right-14 gap-2 p-2.5 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
                 >
                   <ShoppingCartIcon className="h-5 w-5" />
-                  {total_quantity > 0 && (
+                  {/* {total_quantity > 0 && (
                       <span className='absolute -top-1 -right-1 bg-red-600 text-xs px-2 rounded-full'>{total_quantity}</span>
-                  )}
+                  )} */}
                 </button>
                 <button
                   onClick={context?.toggleTheme}

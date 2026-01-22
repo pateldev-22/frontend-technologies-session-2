@@ -1,10 +1,12 @@
-import { useCart } from "@/context/CartContext";
+// import { useCart } from "@/context/CartContext";
+import { removeItem, updateItem } from "@/redux/slices/CartSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 export default function CartPage() {
 
-    const { cart,increment,decrement,removeProduct,clearCart } = useCart();
-     
+    const cart = useSelector((state : any) => state.cart);
+     const dispatch = useDispatch();
     const total_product = cart.reduce(
         (sum:number,curr:number) => sum + curr?.quantity,0
     );
@@ -41,11 +43,20 @@ export default function CartPage() {
               </div>
 
               <div className="flex items-center gap-2">
-                <button onClick={() => decrement(item.id)}> - </button>
+                <button onClick={() => dispatch(updateItem({
+                  id:item.id,
+                  quantity : item.quantity > 1 ? item.quantity - 1 : 1,
+                  })
+                )}>
+                   - 
+                </button>
                 <span>{item.quantity}</span>
-                <button onClick={() => increment(item.id)}> + </button>
+                <button onClick={() => dispatch(updateItem({
+                  id:item.id,
+                  quantity : item.quantity+1,
+                }))}> + </button>
                 <button
-                onClick={() => removeProduct(item.id)}
+                onClick={() => dispatch(removeItem(item.id))}
                 className="text-red-500 ml-2"
                 >
                     Remove

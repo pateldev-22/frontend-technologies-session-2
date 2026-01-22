@@ -4,6 +4,8 @@ interface CartItem{
     id:number,
     quantity:number,
     price:number,
+    category : string,
+    title : string
 }
 
 interface CartState {
@@ -38,15 +40,15 @@ const cartSlice = createSlice({
       state.items[itemIndex].quantity = action.payload.quantity;
 
       state.total = state.items.reduce((total, item) => total + item.price * item.quantity, 0);
-    }
-  },
+        }
+    },
 
-  removeItem: (state, action: PayloadAction<number>) => {
-        state.items = state.items.filter(item => item.id !== action.payload);
+    removeItem: (state, action: PayloadAction<number>) => {
+            state.items = state.items.filter(item => item.id !== action.payload);
 
-        state.total = state.items.reduce((total, item) => total + item.price * item.quantity, 0);
-      },
-  },
+            state.total = state.items.reduce((total, item) => total + item.price * item.quantity, 0);
+        },
+    },
 
 });
 

@@ -10,17 +10,21 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addItem } from "@/redux/slices/CartSlice";
 
 export default function ProductsPage() {
 
     const [products,setProducts] = useState();
-    
+
+    const dispatch = useDispatch();
+
     async function fetchAllProducts(){
             const response = await api.get("products")
              console.log("here !! product",response);
              setProducts(response.data.products);                   
     }
-
+    
     useEffect(() => {
         fetchAllProducts();
     },[])
@@ -46,9 +50,23 @@ export default function ProductsPage() {
             <CardContent>
                     <img src={product.thumbnail} className="h-40 w-80" /> 
             </CardContent>
-            <CardFooter>
+            <CardFooter className="flex flex-row">
                 <button onClick={() => {navigate(`${product.id}`)}} 
                     className=" text-blue-500">View Details
+                </button>
+                <button onClick={() => {
+                    dispatch(addItem(
+                        {
+                            id:product.id,
+                            price : product.price,
+                            category : product.category,
+                            quantity: 1,
+                            title : product.title
+                        }
+                    ))
+                }} 
+                className="bg-blue-500 text-white">
+                    Add To Cart
                 </button>
             </CardFooter>
             </Card>
