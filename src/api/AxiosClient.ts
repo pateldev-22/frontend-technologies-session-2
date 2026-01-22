@@ -4,6 +4,9 @@ import dotenv from 'dotenv';
 export const api = axios.create({
   baseURL: "https://dummyjson.com", 
   timeout: 5000, 
+  headers: {
+      Accept: "application/json, text/plain, */*",
+  },
 });
 
 // api.interceptors.request.use(
