@@ -2,13 +2,13 @@ import { useCart } from '@/context/CartContext';
 import { useTheme } from '@/context/ThemeContext'
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
 import { Bars3Icon,SunIcon,MoonIcon, XMarkIcon,ShoppingCartIcon } from '@heroicons/react/24/outline'
-import { useNavigate } from 'react-router-dom';
+import { href, NavLink, useNavigate } from 'react-router-dom';
 
 const navigation = [
-  { name: 'Dashboard', href: '/dashboard', current: true },
-  { name: 'Team', href: '/team', current: false },
-  { name: 'Projects', href: '/projects', current: false },
-  { name: 'Calendar', href: '/calandar', current: false },
+  {name:"Home" , href:"",current:true},
+  { name: 'products', href: 'products', current: false },
+  { name: 'cart', href: 'cart', current: false },
+  { name: 'About', href: '/About', current: false },
 ]
 
 
@@ -22,6 +22,14 @@ export default function Navbar() {
     (sum:number, curr:any) => sum + curr.quantity,
     0
   )
+
+  const navLinkClass = ({ isActive } : any) =>
+    `px-4 py-2 rounded transition-colors duration-200 ${
+      isActive
+        ? "bg-blue-600 text-white"
+        : "text-gray-700 hover:bg-blue-100"
+    }`;
+
   return (
     <Disclosure
       as="nav"
@@ -43,14 +51,14 @@ export default function Navbar() {
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4 text-white ">
                 {navigation.map((item) => (
-                  <a
+                  <NavLink
                     key={item.name}
-                    href={item.href}
+                    to={item.href}
                     aria-current={item.current ? 'page' : undefined}
-                    className='hover:text-black'
+                    className={navLinkClass}
                   >
                     {item.name}
-                  </a>
+                  </NavLink>
                 ))}
                 <button
                   onClick={() => navigate('/cart')}
