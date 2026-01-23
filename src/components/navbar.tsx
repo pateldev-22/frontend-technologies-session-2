@@ -6,9 +6,9 @@ import { useSelector } from 'react-redux';
 import {  NavLink, useNavigate } from 'react-router-dom';
 
 const navigation = [
-  {name:"Home" , href:"",current:true},
-  { name: 'products', href: 'product', current: false },
-  { name: 'cart', href: 'cart', current: false },
+  // {name:"Home" , href:"",current:true},
+  { name: 'products', href: 'shop/product'},
+  { name: 'cart', href: 'shop/cart', current: false },
   { name: 'About', href: '/About', current: false },
 ]
 
@@ -17,14 +17,14 @@ export default function Navbar() {
   const context = useTheme();
   console.log(context);
   const navigate = useNavigate();
-  const cart = useSelector((state : any) => state.item);
+  const cart = useSelector((state : any) => state.cart);
   
 
 
-  // const total_quantity = cart.reduce(
-  //   (sum:number, curr:any) => sum + curr.quantity,
-  //   0
-  // )
+  const total_quantity = cart.items.reduce(
+    (sum:number, curr:any) => sum + curr.quantity,
+    0
+  )
 
   const navLinkClass = ({ isActive } : any) =>
     `px-4 py-2 rounded transition-colors duration-200 ${
@@ -64,13 +64,13 @@ export default function Navbar() {
                   </NavLink>
                 ))}
                 <button
-                  onClick={() => navigate('/cart')}
+                  onClick={() => navigate('/shop/cart')}
                   className="fixed top-3 right-14 gap-2 p-2.5 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
                 >
                   <ShoppingCartIcon className="h-5 w-5" />
-                  {/* {total_quantity > 0 && (
+                  {total_quantity > 0 && (
                       <span className='absolute -top-1 -right-1 bg-red-600 text-xs px-2 rounded-full'>{total_quantity}</span>
-                  )} */}
+                  )}
                 </button>
                 <button
                   onClick={context?.toggleTheme}

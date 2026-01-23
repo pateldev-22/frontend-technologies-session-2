@@ -1,7 +1,9 @@
 import { api } from "@/api/AxiosClient";
 import { useProduct } from "@/api/quires";
+import { addItem } from "@/redux/slices/CartSlice";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 
 interface Product {
   id: number;
@@ -24,6 +26,9 @@ const ProductsDetails: React.FC = () => {
 
     const { data,isLoading,error} = useProduct(productId);
     const product = data;
+    const dispatch = useDispatch();
+
+    
   if (isLoading) {
     return <div className="text-center py-10 text-gray-500">Loading...</div>;
   }
@@ -64,12 +69,23 @@ const ProductsDetails: React.FC = () => {
           <p className="text-sm text-gray-500 mb-4">
             Stock: {product.stock} | Brand: {product.brand} | Category: {product.category}
           </p>
-          <button onClick={() => navigate('customize')}>
+          <button onClick={() => navigate(`/shop/product/${product.id}/customize`)}>
             Customize Product
           </button>
-          <button className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
+          <button onClick={() => dispatch(addItem(
+                                  {
+                                      id:product.id,
+                                      price : product.price,
+                                      category : product.category,
+                                      quantity: 1,
+                                      title : product.title
+                                  }
+                              ))}
+          className="bg-blue-600 text-white px-6 py-2 ml-8 rounded hover:bg-blue-700 transition">
             Add to Cart
           </button>
+
+          <Outlet context={{product}} />
         </div>
       </div>
     </div>

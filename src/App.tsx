@@ -10,32 +10,36 @@ import ErrorPage from './Pages/ErrorPage';
 
 const router = createBrowserRouter([
   {
-    path:'/shop',
+    path:'/',
     element:<MainLayout />,
     children:[
       {
-        index:true,
-        element:<HomePage />
+        path:'shop',
+        children:[
+          {index:true,element:<HomePage />},
+          {path:'product',element:<Products />},
+          {
+            path:'product/:productId', 
+            element : <ProductsDetails />,
+            children:[
+              {
+                path:'customize', element : <CustomizeDetails /> 
+              }
+          ]
+        },
+        {
+          path:'cart',
+          element:<CartPage />
+        }
+        ]
       },
       {
-        path:'product',element:<Products />
+        path:'/about',
+        element:<About />
       },
-      {
-        path:'product/:productId', element : <ProductsDetails />
-      },
-      {
-       path:'product/:productId/customize', element : <CustomizeDetails /> 
-      },
-      {
-        path:'cart',
-        element:<CartPage />
-      }
     ]
   },
-  {
-    path:'/about',
-    element:<About />
-  },
+  
   {
     path : '*',
     element:<ErrorPage />

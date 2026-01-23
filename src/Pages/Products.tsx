@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addItem } from "@/redux/slices/CartSlice";
 import { useProducts } from "@/api/quires";
+import AddProductForm from "./AddProductForm";
 
 export default function ProductsPage() {
 
@@ -21,15 +22,20 @@ export default function ProductsPage() {
 
     const {data,isLoading,error} = useProducts();
     const products = data;
-
+    console.log(data);
     const navigate = useNavigate();
 
     if(isLoading) return <div className="text-center py-10">Loading Products ... </div>
     if(error) return <div className="text-center py-10 text-red-100">Error loading products</div>
 
     return (<> 
+
+        <div className="flex justify-center mt-10">
+            <AddProductForm />
+        </div>
+
     <ul className="grid grid-cols-2 gap-2">
-    {products && products.map((product : Product) => (
+    {products?.map((product : Product) => (
         <li key={product.id}>
             
             <Card className="max-w-sm mt-20 ml-10">
@@ -47,7 +53,7 @@ export default function ProductsPage() {
                     <img src={product.thumbnail} className="h-40 w-80" /> 
             </CardContent>
             <CardFooter className="flex flex-row">
-                <button onClick={() => {navigate(`${product.id}`)}} 
+                <button onClick={() => {navigate(`/shop/product/${product.id}`)}} 
                     className=" text-blue-500">View Details
                 </button>
                 <button onClick={() => {
@@ -62,7 +68,7 @@ export default function ProductsPage() {
                         }
                     ))
                 }} 
-                className="bg-blue-500 text-white">
+                className="bg-blue-500 text-white ml-32 rounded p-2">
                     Add To Cart
                 </button>
             </CardFooter>

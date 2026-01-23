@@ -76,7 +76,7 @@ export default function ReusableCard({ProductList}:any) {
 
 
     const context = useCart();
-    const {addToCart} = context;
+    const addToCart = context;
 
   return (
     <>
